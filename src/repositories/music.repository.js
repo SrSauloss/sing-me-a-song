@@ -9,7 +9,7 @@ async function storeRecommendation(name, link) {
     }
 
     const { rows } = await connection.query(
-        'INSERT INTO songs (name, youtube_link) VALUES($1, $2) RETURNING id',
+        'INSERT INTO songs (name, youtube_link, score) VALUES($1, $2) RETURNING id',
         [name, link],
     );
 

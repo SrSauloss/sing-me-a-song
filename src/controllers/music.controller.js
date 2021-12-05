@@ -3,7 +3,7 @@
 import { musicSchema } from '../validations/schemas.js';
 import * as musicService from '../services/music.service.js';
 
-async function storeMusic(req, res) {
+async function storeMusic(req, res, next) {
     const { name, youtubeLink } = req.body;
 
     if (musicSchema.validate({ name, youtubeLink }).error) {
@@ -17,7 +17,7 @@ async function storeMusic(req, res) {
         if (error.name === 'MusicError') {
             return res.status(409).send(error.message);
         }
-        res.sendStatus(500);
+        next(error);
     }
 }
 
