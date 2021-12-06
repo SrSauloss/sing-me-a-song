@@ -9,7 +9,7 @@ async function storeRecommendation(name, link) {
     }
 
     const { rows } = await connection.query(
-        'INSERT INTO songs (name, youtube_link, score) VALUES($1, $2) RETURNING id',
+        'INSERT INTO songs (name, youtube_link) VALUES($1, $2) RETURNING id',
         [name, link],
     );
 
@@ -18,17 +18,22 @@ async function storeRecommendation(name, link) {
 
 async function getMusic(id) {
     const resul = await connection.query('SELECT * FROM songs WHERE id = $1', [id]);
-
     return resul.rows[0];
 }
 
-async function addVote(music, points) {
-    const resul = await connection.query('UPDATE songs SET score = $1 WHERE name = $2 ', [points, music]);
+async function updateScore(music, points) {
+    const resul = await connection.query('UPDATE songs SET score = $1 WHERE name = $2', [points, music]);
+    return resul.rows[0];
+}
+
+async function deleteRecommendation(id) {
+    const resul = await connection.query('DELETE FROM songs WHERE id = $1', [id]);
     return resul.rows[0];
 }
 
 export {
     storeRecommendation,
     getMusic,
-    addVote,
+    updateScore,
+    deleteRecommendation,
 };
