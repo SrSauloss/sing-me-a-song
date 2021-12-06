@@ -57,8 +57,36 @@ async function removeVote(req, res, next) {
     }
 }
 
+async function randomMusics(req, res, next) {
+    try {
+        const musics = await musicService.randomSongs();
+        return res.send(musics);
+    } catch (error) {
+        if (error.name === 'MusicError') {
+            return res.status(404).send(error.message);
+        }
+        next(error);
+    }
+}
+
+async function topsMusics(req, res, next) {
+    const { amount } = req.params;
+
+    try {
+        const musics = await musicService.topsSongs(Number(amount));
+        return res.send(musics);
+    } catch (error) {
+        if (error.name === 'MusicError') {
+            return res.status(404).send(error.message);
+        }
+        next(error);
+    }
+}
+
 export {
     storeMusic,
     addVote,
     removeVote,
+    randomMusics,
+    topsMusics,
 };

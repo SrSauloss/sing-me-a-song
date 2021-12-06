@@ -31,9 +31,21 @@ async function deleteRecommendation(id) {
     return resul.rows[0];
 }
 
+async function getAllMusics() {
+    const resul = await connection.query('SELECT * FROM songs');
+    return resul.rows;
+}
+
+async function topMusics(limit) {
+    const resul = await connection.query('SELECT * FROM songs ORDER BY score DESC LIMIT $1', [limit]);
+    return resul.rows;
+}
+
 export {
     storeRecommendation,
     getMusic,
     updateScore,
     deleteRecommendation,
+    getAllMusics,
+    topMusics,
 };

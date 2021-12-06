@@ -1,3 +1,5 @@
+/* eslint-disable radix */
+/* eslint-disable no-plusplus */
 /* eslint-disable import/prefer-default-export */
 /* eslint-disable consistent-return */
 import * as musicRepository from '../repositories/music.repository.js';
@@ -49,8 +51,52 @@ async function removeVoteMusic(id) {
     return resul;
 }
 
+async function randomSongs() {
+    const musics = await musicRepository.getAllMusics();
+
+    if (musics.length === 0) {
+        throw new MusicError('Não há nenhuma música cadastrada');
+    }
+
+    const popularSongs = [];
+    const unpopularSongs = [];
+    for (let i = 0; i < musics.length; ++i) {
+        if (musics[i].points > 10) {
+            popularSongs.push(musics[i]);
+        } else {
+            unpopularSongs.push(musics[i]);
+        }
+    }
+
+    if (popularSongs.length > 0 && unpopularSongs.length > 0) {
+        const randomNumber = Math.random();
+        if (randomNumber <= 0.3) {
+            const randomIndex = Math.floor(Math.random() * unpopularSongs.length);
+            return unpopularSongs[randomIndex];
+        }
+
+        const randomIndex = Math.floor(Math.random() * popularSongs.length);
+        return popularSongs[randomIndex];
+    }
+
+    const index = Math.floor(Math.random() * musics.length);
+    return musics[index];
+}
+
+async function topsSongs(amount) {
+    const musics = await musicRepository.topMusics(parseInt(amount));
+
+    if (musics.length === 0) {
+        throw new MusicError('Não há musicas registradas');
+    }
+
+    return musics;
+}
+
 export {
     registerMusic,
     addVoteMusic,
     removeVoteMusic,
+    randomSongs,
+    topsSongs,
 };
