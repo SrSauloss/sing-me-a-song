@@ -16,6 +16,19 @@ async function storeRecommendation(name, link) {
     return rows[0];
 }
 
+async function getMusic(id) {
+    const resul = await connection.query('SELECT * FROM songs WHERE id = $1', [id]);
+
+    return resul.rows[0];
+}
+
+async function addVote(music, points) {
+    const resul = await connection.query('UPDATE songs SET score = $1 WHERE name = $2 ', [points, music]);
+    return resul.rows[0];
+}
+
 export {
     storeRecommendation,
+    getMusic,
+    addVote,
 };

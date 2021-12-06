@@ -21,4 +21,22 @@ async function storeMusic(req, res, next) {
     }
 }
 
-export { storeMusic };
+async function addVote(req, res, next) {
+    const { id } = req.params;
+
+    if (!id) {
+        return res.sendStatus(400);
+    }
+
+    try {
+        await musicService.addVoteMusic(id);
+        return res.sendStatus(200);
+    } catch (error) {
+        if (error.name === 'MusicError') {
+            return res.status(404).send(error.message);
+        }
+        next(error);
+    }
+}
+
+export { storeMusic, addVote };
