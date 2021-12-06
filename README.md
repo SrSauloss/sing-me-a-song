@@ -1,4 +1,4 @@
-<h1 align='center'>🎶🎵 Sing me a Song API 🎵🎶</h1>
+<h1 align='center'>𝄞 Sing me a Song API 𝄞</h1>
 
 <p align='center'>Sing me a song allows you to recommend songs by sharing the song's youtube link</p>
 
