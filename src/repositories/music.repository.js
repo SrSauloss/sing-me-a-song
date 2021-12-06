@@ -17,27 +17,27 @@ async function storeRecommendation(name, link) {
 }
 
 async function getMusic(id) {
-    const resul = await connection.query('SELECT * FROM songs WHERE id = $1', [id]);
+    const resul = await connection.query('SELECT id, name, youtube_link AS "youtubeLink", score FROM songs WHERE id = $1', [id]);
     return resul.rows[0];
 }
 
 async function updateScore(music, points) {
     const resul = await connection.query('UPDATE songs SET score = $1 WHERE name = $2', [points, music]);
-    return resul.rows[0];
+    return resul.rowCount;
 }
 
 async function deleteRecommendation(id) {
     const resul = await connection.query('DELETE FROM songs WHERE id = $1', [id]);
-    return resul.rows[0];
+    return resul.rowCount;
 }
 
 async function getAllMusics() {
-    const resul = await connection.query('SELECT * FROM songs');
+    const resul = await connection.query('SELECT id, name, youtube_link AS "youtubeLink", score FROM songs');
     return resul.rows;
 }
 
 async function topMusics(limit) {
-    const resul = await connection.query('SELECT * FROM songs ORDER BY score DESC LIMIT $1', [limit]);
+    const resul = await connection.query('SELECT id, name, youtube_link AS "youtubeLink", score FROM songs ORDER BY score DESC LIMIT $1', [limit]);
     return resul.rows;
 }
 

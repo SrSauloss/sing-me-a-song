@@ -7,11 +7,11 @@ import MusicError from '../errors/MusicError.js';
 
 async function registerMusic(name, link) {
     if (!name || !link) {
-        return null;
+        return undefined;
     }
     const linkValid = link.search('www.youtube');
     if (linkValid === -1) {
-        return null;
+        return undefined;
     }
 
     const resul = await musicRepository.storeRecommendation(name, link);
@@ -53,7 +53,6 @@ async function removeVoteMusic(id) {
 
 async function randomSongs() {
     const musics = await musicRepository.getAllMusics();
-
     if (musics.length === 0) {
         throw new MusicError('Não há nenhuma música cadastrada');
     }
